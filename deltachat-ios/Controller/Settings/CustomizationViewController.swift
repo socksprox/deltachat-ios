@@ -106,7 +106,7 @@ class CustomizationViewController: UITableViewController {
     // MARK: - Navigation
     
     private func showWallpaperSettings() {
-        navigationController?.pushViewController(BackgroundOptionsViewController(dcContext: dcContext), animated: true)
+        navigationController?.pushViewController(WallpaperViewController(dcContext: dcContext), animated: true)
     }
     
     private func showChatBubblesSettings() {

@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import DcCore
 
-class WallpaperViewController: UIViewController, MediaPickerDelegate {
+class WallpaperViewController: UIViewController, MediaPickerDelegate, UIColorPickerViewControllerDelegate {
 
     private let dcContext: DcContext
 
@@ -222,7 +222,7 @@ class WallpaperViewController: UIViewController, MediaPickerDelegate {
 // MARK: - UIColorPickerViewControllerDelegate
 
 @available(iOS 14.0, *)
-extension BackgroundOptionsViewController: UIColorPickerViewControllerDelegate {
+extension WallpaperViewController {
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         saveBackgroundColor(viewController.selectedColor)
         backgroundContainer.image = nil
