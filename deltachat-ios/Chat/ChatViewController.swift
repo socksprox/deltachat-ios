@@ -139,7 +139,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         didSet { reloadInputViews() }
     }
     override var inputAccessoryView: UIView? {
-        get { customInputAccessoryView }
+        get {
+            if contextMenuVisible {
+                return nil
+            }
+            return customInputAccessoryView
+        }
         set { customInputAccessoryView = newValue }
     }
 
@@ -1769,6 +1774,11 @@ extension ChatViewController {
         cell.messageBackgroundContainer.isHidden = true
         cell.reactionsView.isHidden = true
         contextMenuVisible = true
+        
+        // Hide input bar by toggling inputAccessoryView to nil via contextMenuVisible flag
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.reloadInputViews()
+        }
 
         updateScrollDownButtonVisibility()
     }
@@ -1788,8 +1798,13 @@ extension ChatViewController {
         cell.messageBackgroundContainer.isHidden = false
         cell.reactionsView.isHidden = false
         contextMenuVisible = false
-
+        
         updateScrollDownButtonVisibility()
+        
+        // Show input bar by toggling inputAccessoryView back via contextMenuVisible flag
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.reloadInputViews()
+        }
     }
 
     func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
