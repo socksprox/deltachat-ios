@@ -375,7 +375,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         // Manually set the safe area because tableView is flipped
-        tableView.contentInset.bottom = tableView.safeAreaInsets.top
+        // Add extra padding beyond the navigation bar to allow scrolling to see the first messages fully
+        tableView.contentInset.bottom = tableView.safeAreaInsets.top + 100
     }
 
     override func didMove(toParent parent: UIViewController?) {
