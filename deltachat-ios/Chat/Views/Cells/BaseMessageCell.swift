@@ -288,8 +288,13 @@ public class BaseMessageCell: UITableViewCell {
         gestureRecognizer.numberOfTapsRequired = 1
         avatarView.addGestureRecognizer(gestureRecognizer)
 
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onMessageDoubleTapped))
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        messageBackgroundContainer.addGestureRecognizer(doubleTapGestureRecognizer)
+
         let messageLabelGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
         messageLabelGestureRecognizer.numberOfTapsRequired = 1
+        messageLabelGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
         messageLabel.addGestureRecognizer(messageLabelGestureRecognizer)
 
         let quoteViewGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onQuoteTapped))
@@ -351,6 +356,13 @@ public class BaseMessageCell: UITableViewCell {
             baseDelegate?.statusTapped(indexPath: indexPath)
         }
     }
+
+    @objc func onMessageDoubleTapped() {
+        if let tableView = self.superview as? UITableView, let indexPath = tableView.indexPath(for: self) {
+            baseDelegate?.messageDoubleTapped(indexPath: indexPath)
+        }
+    }
+
     public override func willTransition(to state: UITableViewCell.StateMask) {
         super.willTransition(to: state)
         // while the content view gets intended by the appearance of the edit control,
@@ -744,4 +756,5 @@ public protocol BaseMessageCellDelegate: AnyObject {
     func statusTapped(indexPath: IndexPath)
     func gotoOriginal(indexPath: IndexPath)
     func reactionsTapped(indexPath: IndexPath)
+    func messageDoubleTapped(indexPath: IndexPath)
 }

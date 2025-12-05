@@ -2384,6 +2384,18 @@ extension ChatViewController: BaseMessageCellDelegate {
             info(for: message.id)
         }
     }
+
+    @objc func messageDoubleTapped(indexPath: IndexPath) {
+        if handleSelection(indexPath: indexPath) { return }
+
+        let messageId = messageIds[indexPath.row]
+        let message = dcContext.getMessage(id: messageId)
+        
+        // Only allow editing own messages with text that are not HTML and can be sent
+        if message.isFromCurrentSender && message.hasText && !message.hasHtml && !message.isMarkerOrInfo && dcChat.canSend {
+            editSentMessage(messageId)
+        }
+    }
 }
 
 // MARK: - MediaPickerDelegate
